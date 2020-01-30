@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Image, StatusBar, Button, Alert, TouchableNativeFeedback, TouchableHighlight, Platform, ImageBackground } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { ButtonControl } from './../components/ButtonControl'
 import LottieView from 'lottie-react-native';
+import { IProps } from '../interfaces/IProps';
 
-interface Props {
-    navigation: any
-}
-
-export class LoadingModal extends Component<Props> {
+export class LoadingModal extends Component<IProps> {
     close = () => { this.props.navigation.goBack() }
     goSong = () => { this.props.navigation.navigate('Song') }
 
@@ -19,8 +16,9 @@ export class LoadingModal extends Component<Props> {
                 <View style={{ flex: 1, justifyContent: 'flex-end', alignContent: 'flex-end', alignItems: 'flex-end', marginBottom: 30 }}>
                     <LottieView source={require('./../resources/loader.json')} autoPlay loop style={{ height: 100, width: 50 }} />
                 </View>
-                <Text style={{ fontSize: 20, color: '#fff', alignSelf: 'center', flex: 1, textAlignVertical: 'top' }}>Escuchando...</Text>
-                <ButtonControl onPress={this.goSong}><View style={{ flex: 1, justifyContent: 'flex-end', alignContent: 'flex-end', alignItems: 'flex-end', marginBottom: 30 }}><Text>GOSONG</Text></View></ButtonControl>
+                <ButtonControl onPress={this.goSong}>
+                    <Text style={{ fontSize: 20, color: '#fff', alignSelf: 'center', flex: 1, textAlignVertical: 'top' }}>Escuchando...</Text>
+                </ButtonControl>
 
             </View>
         );
