@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, FlatList, ImageBackground, StatusBar, Sc
 import LottieView from 'lottie-react-native';
 import { ButtonControl } from './../components/ButtonControl'
 import { IProps } from '../interfaces/IProps';
-import { styles } from '../styles/styles';
+import { styles } from '../styles/Styles';
 
 export class RecommendationsModal extends Component<IProps> {
     close = () => { this.props.navigation.goBack() }
