@@ -6,8 +6,9 @@ import { IProps } from '../interfaces/IProps';
 import * as Permissions from 'expo-permissions';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import { fileToBase64 } from '../managers/File.Manager';
 
-const recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
+const recordingSettings = Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY;
 
 export class Home extends Component<IProps> {
     recording: any;
@@ -66,7 +67,10 @@ export class Home extends Component<IProps> {
 
         const recording = new Audio.Recording();
         this.recording = recording;
-        this.recording.setOnRecordingStatusUpdate(console.log);
+        recordingSettings.android.extension = Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEGLAYER3;
+        recordingSettings.ios.extension = Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEGLAYER3;
+        recordingSettings.android.outputFormat = Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4;
+        recordingSettings.ios.outputFormat = Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4;
         await this.recording.prepareToRecordAsync(recordingSettings);
 
         await this.recording.startAsync(); // Will call this._updateScreenForRecordingStatus to update the screen.
@@ -85,7 +89,7 @@ export class Home extends Component<IProps> {
             // Do nothing -- we are already unloaded.
         }
         const info = await FileSystem.getInfoAsync(this.recording.getURI());
-        console.log(`FILE INFO: ${JSON.stringify(info)}`);
+        console.log('INFO!',info);
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
             interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -95,6 +99,8 @@ export class Home extends Component<IProps> {
             playThroughEarpieceAndroid: false,
             staysActiveInBackground: true,
         });
+        const infoString = await FileSystem.readAsStringAsync(this.recording.getURI(), {encoding: FileSystem.EncodingType.Base64});
+        console.log(infoString);
         const { sound, status } = await this.recording.createNewLoadedSoundAsync(
             {
                 isLooping: true,
