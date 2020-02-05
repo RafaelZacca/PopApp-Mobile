@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         flex: 3,
         color: '#fff',
         flexDirection: 'column',
-        padding: 20
+        padding: 0
     },
     backArrow: {
         height: 30,

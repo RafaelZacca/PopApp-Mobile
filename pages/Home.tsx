@@ -3,118 +3,15 @@ import { Text, View, Image, ImageBackground, StyleSheet } from 'react-native';
 import { ButtonControl } from '../components/ButtonControl'
 import { styles } from '../styles/Styles';
 import { IProps } from '../interfaces/IProps';
-import * as Permissions from 'expo-permissions';
-import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
-import { fileToBase64 } from '../managers/File.Manager';
-
-const recordingSettings = Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY;
+import { askForAudioRecordingPermission } from '../managers/Permisions.Manager';
 
 export class Home extends Component<IProps> {
-    recording: any;
-    sound: any;
-    isRecording: boolean = false;
-    state = {
-        haveRecordingPermissions: false,
-        isLoading: false,
-        isPlaybackAllowed: false,
-        muted: false,
-        soundPosition: null,
-        soundDuration: null,
-        recordingDuration: null,
-        shouldPlay: false,
-        isPlaying: false,
-        isRecording: false,
-        fontLoaded: false,
-        shouldCorrectPitch: true,
-        volume: 1.0,
-        rate: 1.0,
-    };
-    start = () => {
-        if (!this.isRecording) {
-            this.beginRecording();
-            this.isRecording = true;
-            // this.props.navigation.navigate('Modal');
-        }
-        else {
-            this._stopRecordingAndEnablePlayback();
-            this.isRecording = false;
-
-        }
+    start = async () => {
+        this.props.navigation.navigate('Modal');
     }
 
     componentDidMount() {
-        this._askForPermissions();
-    }
-
-    _askForPermissions = async () => {
-        const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-        this.setState({
-            haveRecordingPermissions: response.status === 'granted',
-        });
-    };
-
-    async beginRecording() {
-        await Audio.setAudioModeAsync({
-            allowsRecordingIOS: true,
-            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: true,
-            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-            playThroughEarpieceAndroid: false,
-            staysActiveInBackground: true,
-        });
-
-        const recording = new Audio.Recording();
-        this.recording = recording;
-        recordingSettings.android.extension = Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEGLAYER3;
-        recordingSettings.ios.extension = Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEGLAYER3;
-        recordingSettings.android.outputFormat = Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4;
-        recordingSettings.ios.outputFormat = Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4;
-        await this.recording.prepareToRecordAsync(recordingSettings);
-
-        await this.recording.startAsync(); // Will call this._updateScreenForRecordingStatus to update the screen.
-        this.setState({
-            isLoading: false,
-        });
-    }
-
-    async _stopRecordingAndEnablePlayback() {
-        this.setState({
-            isLoading: true,
-        });
-        try {
-            await this.recording.stopAndUnloadAsync();
-        } catch (error) {
-            // Do nothing -- we are already unloaded.
-        }
-        const info = await FileSystem.getInfoAsync(this.recording.getURI());
-        console.log('INFO!',info);
-        await Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: true,
-            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-            playThroughEarpieceAndroid: false,
-            staysActiveInBackground: true,
-        });
-        const infoString = await FileSystem.readAsStringAsync(this.recording.getURI(), {encoding: FileSystem.EncodingType.Base64});
-        console.log(infoString);
-        const { sound, status } = await this.recording.createNewLoadedSoundAsync(
-            {
-                isLooping: true,
-                isMuted: this.state.muted,
-                volume: this.state.volume,
-                rate: this.state.rate,
-                shouldCorrectPitch: this.state.shouldCorrectPitch,
-            }
-        );
-        this.sound = sound;
-        this.setState({
-            isLoading: false,
-        });
-        this.sound.playAsync();
+        askForAudioRecordingPermission();
     }
 
     render() {

@@ -3,10 +3,28 @@ import { Text, View, Image } from 'react-native';
 import { ButtonControl } from './../components/ButtonControl'
 import LottieView from 'lottie-react-native';
 import { IProps } from '../interfaces/IProps';
+import { stopRecording, beginRecording, stopRecordingAt20Seconds, getRecordingBase64 } from '../managers/Recording.Manager';
+import { Audio } from 'expo-av';
+import { getSong } from '../managers/Networking.Manager';
 
 export class LoadingModal extends Component<IProps> {
-    close = () => { this.props.navigation.goBack() }
+    recording: Audio.Recording;
+    
+    close = async () => { 
+        await stopRecording(this.props.navigation.state.params);
+        this.props.navigation.goBack();
+    }
+
     goSong = () => { this.props.navigation.navigate('Song') }
+
+    async componentDidMount() {
+        this.recording = await beginRecording();
+        if (this.recording){
+            await stopRecordingAt20Seconds(this.recording);
+            const song = await getSong(await getRecordingBase64(this.recording));
+            console.log(song);
+        }
+    }
 
     render() {
         return (
