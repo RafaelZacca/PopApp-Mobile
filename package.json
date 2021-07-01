@@ -9,26 +9,32 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^36.0.2",
-    "expo-av": "~8.0.0",
-    "expo-file-system": "~8.0.0",
-    "expo-linear-gradient": "~7.0.1",
-    "lottie-ios": "3.1.5",
-    "lottie-react-native": "^3.3.2",
-    "react": "16.9.0",
-    "react-dom": "16.11.0",
-    "react-native": "0.61.5",
-    "react-native-gesture-handler": "^1.5.3",
-    "react-native-reanimated": "^1.4.0",
-    "react-native-web": "^0.11.7",
+    "@react-native-community/masked-view": "0.1.10",
+    "expo": "^40.0.0",
+    "expo-av": "~8.7.0",
+    "expo-file-system": "~9.3.0",
+    "expo-linear-gradient": "~8.4.0",
+    "expo-notifications": "~0.8.2",
+    "expo-secure-store": "~9.3.0",
+    "lottie-ios": "3.2.0",
+    "lottie-react-native": "~2.6.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native-elements": "^3.4.2",
+    "react-native-gesture-handler": "~1.8.0",
+    "react-native-reanimated": "~1.13.0",
+    "react-native-safe-area-context": "3.1.9",
+    "react-native-screens": "~2.15.2",
+    "react-native-web": "~0.13.12",
     "react-navigation": "^4.0.10",
-    "react-navigation-stack": "^1.10.3"
+    "react-navigation-stack": "^2.10.4"
   },
   "devDependencies": {
-    "@types/react": "^16.9.11",
-    "@types/react-native": "^0.60.22",
-    "babel-preset-expo": "^7.1.0",
-    "typescript": "^3.7.2"
+    "@types/react": "~16.9.35",
+    "@types/react-native": "~0.63.2",
+    "babel-preset-expo": "8.3.0",
+    "typescript": "~4.0.0"
   },
   "private": true
 }
