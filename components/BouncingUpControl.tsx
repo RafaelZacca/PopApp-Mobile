@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 
-export const BouncingUpControl = (props) => {
+interface BouncingUpControlProps{
+    style: any,
+    children: ReactNode
+}
+
+export const BouncingUpControl = (props: BouncingUpControlProps) => {
     const [bouncingAnim] = useState(new Animated.Value(0))  // Initial value for opacity: 0
 
     React.useEffect(() => {
@@ -10,6 +15,7 @@ export const BouncingUpControl = (props) => {
                 Animated.timing(
                 bouncingAnim,
                 {
+                    useNativeDriver: false,
                     toValue: 10,
                     easing: Easing.inOut(Easing.cubic),
                     duration: 2000,
@@ -18,6 +24,7 @@ export const BouncingUpControl = (props) => {
             Animated.timing(
                 bouncingAnim,
                 {
+                    useNativeDriver: false,
                     toValue: 0,
                     easing: Easing.inOut(Easing.cubic),
                     duration: 2000,

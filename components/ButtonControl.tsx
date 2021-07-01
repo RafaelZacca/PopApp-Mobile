@@ -1,7 +1,12 @@
-import React, { Component } from 'react'
-import { Platform, TouchableNativeFeedback, TouchableHighlight, StyleSheet } from 'react-native'
+import React, { ReactNode } from 'react'
+import { Platform, TouchableNativeFeedback, TouchableHighlight, StyleSheet, GestureResponderEvent } from 'react-native'
 
-export const ButtonControl = (props) => {
+interface ButtonControlProps {
+    onPress: (event: GestureResponderEvent) => void,
+    children: ReactNode
+}
+
+export const ButtonControl = (props: ButtonControlProps) => {
     return Platform.OS === 'android'
         ? <TouchableNativeFeedback onPress={props.onPress} style={styles.button} >{props.children}</TouchableNativeFeedback>
         : <TouchableHighlight onPress={props.onPress} style={styles.button}>{props.children}</TouchableHighlight>
@@ -9,6 +14,7 @@ export const ButtonControl = (props) => {
 
 const styles = StyleSheet.create({
     button: {
-        flex: 1
-    }
+        flex: 1,
+        zIndex: 2
+    },
 });
