@@ -18,7 +18,7 @@ export function apiDelete<bool>(url: string, id: number, abortSignal: AbortSigna
 }
 
 async function processRequest(url: string, method: ApiMethodsEnum, abortSignal: AbortSignal, jsonRequest?: string, queryString?: string, showDefaultMsg?: boolean) {
-    const baseUrl = 'https://popappapi.conveyor.cloud';
+    const baseUrl = process.env.API_URL;
 
     const token = await SecureStore.getItemAsync('token');
     let requestHeaders: HeadersInit;
@@ -59,17 +59,21 @@ async function processRequest(url: string, method: ApiMethodsEnum, abortSignal: 
             return data;
         })
         .catch((error) => {
-            console.log(error);
-            let errorCloned = error.clone();
-            if (showDefaultMsg == null || showDefaultMsg == true) {
-                if (error && error.bodyUsed !== null && !error.bodyUsed) {
-                    processWarning(error);
+            try{
+                let errorCloned = error.clone();
+                if (showDefaultMsg == null || showDefaultMsg == true) {
+                    if (error && error.bodyUsed !== null && !error.bodyUsed) {
+                        processWarning(error);
+                    }
+                    else {
+                        processServerCommunicationError(error);
+                    }
                 }
-                else {
-                    processServerCommunicationError(error);
-                }
+                throw errorCloned;
             }
-            throw errorCloned;
+            catch{
+                throw error;
+            }
         });
 }
 
