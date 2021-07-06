@@ -10,13 +10,14 @@ import * as SecureStore from 'expo-secure-store';
 import * as Notifications from 'expo-notifications';
 import login from './services/Auth.Service';
 import UserModel from './models/User.Model';
+import * as ExpoConstants from 'expo-constants';
 
 class App extends Component {
   abortController = new AbortController();
 
   async componentDidMount() {
     let deviceInfo = await Notifications.getDevicePushTokenAsync();
-    let authentication = await login({ token: deviceInfo.data, deviceType: deviceInfo.type } as UserModel, this.abortController.signal);
+    let authentication = await login({ password: deviceInfo.data, userName: ExpoConstants.default.deviceId } as UserModel, this.abortController.signal);
     await SecureStore.setItemAsync('token', authentication.token);
   }
 

@@ -1,4 +1,4 @@
 export default class UserModel {
-    deviceType: string;
-    token: string;
+    userName: string;
+    password: string;
 }
