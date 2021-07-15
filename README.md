@@ -58,7 +58,6 @@ expo start {args}
   ├── services              # api communication functions
   ├── supports	            # utility functions, libs, constants, etc.
   ├── App.tsx             	# entry point
-  ├── index.css             # general stylesheets and overwrites
   ├── tsconfig.json         # typescript configuration
   ├── .env.development      # environmental variables for develop
   ├── .env.production       # environmental variables for production
