@@ -2,6 +2,8 @@
 
 PopApp is a PoC mobile application built with React Native and Expo that listens to short audio clips, identifies the song being played, and recommends similar tracks. It features animated interactions, custom modals, and smooth transitions to offer a fun and interactive experience. This is a PoC, which means this has been developed under the purpose of trying and learning the technology, and there is no intention of putting this App on production.
 
+The App follows this design (also built by me) that was used to guide the development process of a Front-End solution: [PopApp Design](https://xd.adobe.com/view/14ac3ce9-4420-449c-616f-d6b92c7b98ab-629d/)
+
 ---
 
 ## ✨ Features
