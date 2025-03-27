@@ -1,31 +1,31 @@
 {
   "expo": {
-    "name": "PopApp",
-    "slug": "PopApp",
-    "privacy": "public",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "name": "PopAppMobile",
+    "slug": "PopAppMobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#00000"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": true
     },
     "android": {
-      "package": "com.yourcompany.yourappname"
-    }
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#00000"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

@@ -1,70 +1,85 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, StatusBar, ImageBackground } from 'react-native';
-import { ButtonControl } from '../components/ButtonControl'
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types';
+import { ButtonControl } from '../components/ButtonControl';
 import LottieView from 'lottie-react-native';
 import { BouncingUpControl } from '../components/BouncingUpControl';
-import { NavigationScreenProp, NavigationState } from 'react-navigation';
-import { Directions, FlingGestureHandler } from 'react-native-gesture-handler';
+import { Directions, FlingGestureHandler, State as GestureState } from 'react-native-gesture-handler';
 import SongModel from '../models/Song.Model';
 
-interface Props {
-    navigation: NavigationScreenProp<NavigationState, SongModel>,
-}
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'SongPage'>;
 
-interface State {
-    song: SongModel;
-    animation: any;
-}
+const animations = [
+  require('./../resources/animations/walking.json'),
+  require('./../resources/animations/rocket.json'),
+  require('./../resources/animations/jolly.json'),
+  require('./../resources/animations/hair.json'),
+  require('./../resources/animations/dance.json'),
+];
 
-const animations = [require('./../resources/animations/walking.json'), require('./../resources/animations/rocket.json'), require('./../resources/animations/jolly.json'), require('./../resources/animations/hair.json'), require('./../resources/animations/dance.json')]
+const SongPage: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
+  const route = useRoute(); // by default, useRoute is loosely typed — you can use generics if needed
+  const song = route.params as SongModel;
 
-class SongPage extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            song: props.navigation.state.params,
-            animation: animations[Math.floor(Math.random() * animations.length)]
-        }
-    }
+  const [animation] = useState<any>(animations[Math.floor(Math.random() * animations.length)]);
 
-    goBack = () => { this.props.navigation.goBack() }
-    goRecommendations = () => { this.props.navigation.navigate('RecommendationsModal', { recognition: this.state.song, animation: this.state.animation }) }
+  const goBack = () => navigation.goBack();
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.safeArea}>
-                    <ButtonControl onPress={this.goBack}>
-                        <View style={styles.header} >
-                            <Image style={styles.backArrow} source={require('./../resources/images/back_arrow.png')}></Image>
-                            <Text style={styles.backHeaderText}>Atrás</Text>
-                        </View>
-                    </ButtonControl>
+  const goRecommendations = () => {
+    navigation.navigate('RecommendationsModal', {
+      recognition: song,
+      animation,
+    });
+  };
 
-                    <View style={styles.body}>
-                        <ImageBackground style={styles.imageBackground} source={require('./../resources/images/gradient_elipse.png')}>
-                            <View style={styles.animationContainer}>
-                                <LottieView style={styles.animation} source={this.state.animation} autoPlay loop />
-                            </View>
-                        </ImageBackground>
-                        <View style={styles.songContainer}>
-                            <Text style={styles.songTitle}>{this.state.song.name}</Text>
-                            <Text style={styles.songArtist}>{this.state.song.artistName}</Text>
-                        </View>
-                        <FlingGestureHandler onHandlerStateChange={this.goRecommendations} direction={Directions.UP}>
-                            <View style={styles.recommendationsContainer}>
-                                <BouncingUpControl style={styles.bouncingControl}>
-                                    <Image style={styles.bouncingIcon} source={require('./../resources/images/up_arrow.png')}></Image>
-                                </BouncingUpControl>
-                                <Text style={styles.recommendationsText}>RECOMENDACIONES</Text>
-                            </View>
-                        </FlingGestureHandler >
-                    </View>
-                </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.safeArea}>
+        <ButtonControl onPress={goBack}>
+          <View style={styles.header}>
+            <Image style={styles.backArrow} source={require('./../resources/images/back_arrow.png')} />
+            <Text style={styles.backHeaderText}>Atrás</Text>
+          </View>
+        </ButtonControl>
+
+        <View style={styles.body}>
+          <ImageBackground
+            style={styles.imageBackground}
+            source={require('./../resources/images/gradient_elipse.png')}
+          >
+            <View style={styles.animationContainer}>
+              <LottieView style={styles.animation} source={animation} autoPlay loop />
             </View>
-        )
-    }
-}
+          </ImageBackground>
+
+          <View style={styles.songContainer}>
+            <Text style={styles.songTitle}>{song.name}</Text>
+            <Text style={styles.songArtist}>{song.artistName}</Text>
+          </View>
+
+          <FlingGestureHandler
+            direction={Directions.UP}
+            onHandlerStateChange={({ nativeEvent }) => {
+              if (nativeEvent.state === GestureState.END) {
+                goRecommendations();
+              }
+            }}
+          >
+            <View style={styles.recommendationsContainer}>
+              <BouncingUpControl style={styles.bouncingControl}>
+                <Image style={styles.bouncingIcon} source={require('./../resources/images/up_arrow.png')} />
+              </BouncingUpControl>
+              <Text style={styles.recommendationsText}>RECOMENDACIONES</Text>
+            </View>
+          </FlingGestureHandler>
+        </View>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
     container: {

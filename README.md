@@ -1,68 +1,117 @@
-# POPAPP MOBILE
-PopApp Mobile Application.
+# 🎧 PopApp Mobile
 
-### Features
-- [React-Native](https://reactnative.dev/) + [React Navigation](https://reactnavigation.org/)
-- [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) 
-- [babel-plugin-inline-dotenv](https://github.com/brysgo/babel-plugin-inline-dotenv/blob/master/README.md)
-- [Expo](https://expo.io/)
-- [Lottie](https://github.com/lottie-react-native/lottie-react-native/blob/master/README.md)
+PopApp is a PoC mobile application built with React Native and Expo that listens to short audio clips, identifies the song being played, and recommends similar tracks. It features animated interactions, custom modals, and smooth transitions to offer a fun and interactive experience. This is a PoC, which means this has been developed under the purpose of trying and learning the technology, and there is no intention of putting this App on production.
 
-## Installation
-* Install [NodeJS](https://nodejs.org/en/download/) >= 14
-* Install [Expo](https://docs.expo.io/get-started/installation/)
-* Download the project:
+---
 
-```
+## ✨ Features
+
+- [React Native](https://reactnative.dev/) + [React Navigation v6](https://reactnavigation.org/)
+-  [TypeScript](https://www.typescriptlang.org/docs/handbook/react.html)
+- [Expo SDK 50+](https://docs.expo.dev/)
+- [Lottie Animations](https://github.com/lottie-react-native/lottie-react-native)
+- Audio recording with [expo-av](https://docs.expo.dev/versions/latest/sdk/av/)
+- Live connection with a backend API for recognition and recommendation
+
+---
+
+## ⚙️ Installation
+
+### 1. Install requirements
+
+- [Node.js ≥ 18](https://nodejs.org/en/download/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+
+### 2. Clone the project
+```bash
 git clone https://github.com/RafaelZacca/PopApp-Mobile.git
+cd PopApp-Mobile
 ```
 
-* Install dependencies:
-
-```
-expo install
-```
-
-## Getting started
-```
-expo start
+### 3. Install dependencies
+```bash
+npm install
 ```
 
-- Runs the app in development mode.
-- You will see the build errors and lint warnings in the console.
+---
 
-## API references
-- This project requires an API Solution to work with. 
-- Go to https://github.com/RafaelZacca/PopApp-API.git to clone the required API project. 
+## ⚡ Getting Started
 
-## Deployment builds
+Start the app in development mode:
+```bash
+npx expo start
 ```
-expo start {args}
-``` 
-- Replace `{args}` with: nothing for develop // `--no-dev --minify` for production build
-- `expo build` Builds the app for production using expo. Checking with `expo build:status` you can check up your build process, when it's done you'll see the url to your app file.
-- It correctly bundles React in production mode and optimizes the build for the best performance.
-- The build is minified and the filenames include the hashes.
 
-## Project Structure
+Then press:
+- `a` to open on Android
+- `i` to open on iOS (macOS only)
+- `w` to open in browser
+
+---
+
+## 🌐 API References
+
+This project requires the [PopApp Backend API](https://github.com/RafaelZacca/PopApp-API.git) to work correctly.
+
+To set up the backend:
+- Clone: `https://github.com/RafaelZacca/PopApp-API.git`
+- Follow the backend README to run it locally
+- Ensure CORS is enabled and both projects are aligned
+
+---
+
+## 🚀 Deployment Builds
+
+Expo SDK 46+ and above use [**EAS Build**](https://docs.expo.dev/build/introduction/) instead of the deprecated `expo build`.
+
+### Install EAS CLI
+```bash
+npm install -g eas-cli
 ```
-  .
-  ├── assets                # static assets
-  ├── components            # react components
-  ├── modals                # application modals
-  ├── pages                 # application pages
-  ├── models		        # api models representations
-  ├── resources		        # static resources
-  │   ├── animations	                # json lottie animations
-  │   ├── images	                	# static images
-  ├── services              # api communication functions
-  ├── supports	            # utility functions, libs, constants, etc.
-  ├── App.tsx             	# entry point
-  ├── tsconfig.json         # typescript configuration
-  ├── .env.development      # environmental variables for develop
-  ├── .env.production       # environmental variables for production
-  ├── babel.config.js       # babel configuration
-  ├── app.json              # application configuration
-  ├── package.json            
-  └── README.md
+
+### Build the app
+
+**Android:**
+```bash
+eas build --platform android
+```
+
+**iOS:**
+```bash
+eas build --platform ios
+```
+
+### Check build status
+```bash
+eas build:list
+```
+
+### Run local production preview
+```bash
+npx expo start --no-dev --minify
+```
+
+---
+
+## 📁 Project Structure
+
+```
+.
+├── assets                # Static assets (icons, splash)
+├── components            # Reusable UI components
+├── modals                # Modal screens (e.g., recommendations)
+├── pages                 # Main application pages
+├── models                # TypeScript interfaces for API models
+├── resources             # Images and animations
+│   ├── animations
+│   └── images
+├── services              # API communication logic
+├── supports              # Utilities, constants, helpers
+├── App.tsx               # Entry point
+├── app.json              # Expo config (includes icon + splash)
+├── tsconfig.json         # TypeScript config
+├── .env.development      # Environment variables for dev
+├── .env.production       # Environment variables for prod
+├── types                 # For navigation
+└── README.md             # You’re here
 ```
